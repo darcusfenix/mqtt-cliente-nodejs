@@ -1,0 +1,23 @@
+{
+  "name": "dogs",
+  "description": "prueba de concepto",
+  "main": "index.js",
+  "authors": [
+    "Juan Crisostomo"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jwt-decode": "^2.1.0",
+    "underscore": "^1.8.3"
+  }
+}
