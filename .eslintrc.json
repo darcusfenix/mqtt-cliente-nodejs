@@ -188,35 +188,6 @@
       "no-plusplus": 2      // disallow use of unary operators, ++ and -- (off by default)
     },
     "globals": {
-        "$": false,
-        "jQuery": false,
-        "moment": false,
-        "jwt_decode": false,
-        "SessionStorageItem": false,
-        "alertify": false,
-        "App": false,
-        "FORMATO_FECHA_HORA": false,
-        "FORMATO_HORA": false,
-        "FORMATO_FECHA": false,
-        "CLASE_CSS": false,
-        "ESTATUS": false,
-        "URI": false,
-        "Pages": false,
-        "Catalogos": false,
-        "StatusCode": false,
-        "Valor": false,
-        "TelstockBase": false,
-        "FiltroTabla": false,
-        "Spinner": false,
-        "Menu": false,
-        "Logger": false,
-        "google": false,
-        "Select": false,
-        "PAGINA_ACTUAL": true,
-        "ACTIVIDAD": true,
-        "URL_BASE": true,
-        "_": true,
-        "CONSTANTE": true,
-        "axios": true
+
     }
 }

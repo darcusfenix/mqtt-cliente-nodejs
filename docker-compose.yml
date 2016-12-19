@@ -8,8 +8,8 @@ mongodb-seed:
   links:
   - mongodb
 
-web:
-  build: .
-  ports:
-    - "3000:3000"
+#web:
+ # build: .
+  #ports:
+   # - "3000:3000"
 

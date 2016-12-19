@@ -2,29 +2,58 @@ import express from "express";
 import path from "path";
 import open from "open";
 import webpack from "webpack";
-import webpackConfiguracion from "../webpack.config.dev";
+import mongoose from "mongoose";
 import compression from"compression" ;
 import colors from "colors";
+import webpackConfiguracion from "../webpack.config.dev";
+import Dog from "../src-bk/models/dogModel";
 
 const app = express(),
     compilar = webpack(webpackConfiguracion),
-    directorio = "public",
+    directorio = "src",
     port = 3000;
+
+let db = mongoose.connect("mongodb://localhost:27017/dogs");
+
+let dogRouter = express.Router();
+
+dogRouter.route("/dog")
+    .get((req, res)=> {
+
+        Dog.find((err, dogs)=> {
+
+            if (err) {
+
+                res.status(500).send(err);
+
+            } else {
+
+                res.json(dogs);
+
+            }
+
+        });
+
+    });
+
+app.use("/api", dogRouter);
 
 app.use(require("webpack-dev-middleware")(compilar, {
     "noInfo": true,
-    "publicPath": webpackConfiguracion.output.publicPath
+    "publicPath": webpackConfiguracion.output.publicPath/**/
 }));
 
 app.use(require("webpack-hot-middleware")(compilar));
 
 app.use(express.static(`${directorio}`));
 
-app.get("/", (req, res) => {
+/*
+ app.get("/", (req, res) => {
 
-    res.sendFile(path.join(__dirname, "../" + directorio + "/home.htm"));
+ res.sendFile(path.join(__dirname, "../" + directorio + "/home.htm"));
 
-});
+ });
+ */
 
 app.get("*", (req, res, next) => {
 
