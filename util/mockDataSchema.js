@@ -133,11 +133,6 @@ export const schema = {
             "items": {
                 "type": "object",
                 "properties": {
-                    "_id": {
-                        "type": "string",
-                        "unique": true,
-                        "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-                    },
                     "name": {
                         "type": "string",
                         "faker": "commerce.productName"
@@ -159,7 +154,7 @@ export const schema = {
                         "pattern": "false|true"
                     }
                 },
-                "required": ["_id", "name","age", "genere", "lost"]
+                "required": [ "name","age", "genere", "lost"]
             }
         }
     },

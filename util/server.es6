@@ -3,72 +3,28 @@ import path from "path";
 import open from "open";
 import webpack from "webpack";
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
 import compression from"compression" ;
 import colors from "colors";
 import webpackConfiguracion from "../webpack.config.dev";
-import Dog from "../src-bk/models/dogModel";
+import dogRouter from "../src/routes/dogRoute";
 
 const app = express(),
     compilar = webpack(webpackConfiguracion),
     directorio = "src",
     port = 3000;
 
+app.use(bodyParser.urlencoded({"extended": true}));
+app.use(bodyParser.json());
+
 let db = mongoose.connect("mongodb://localhost:27017/dogs");
-
-let dogRouter = express.Router();
-
-dogRouter.route("/dog")
-    .get((req, res)=> {
-        let query = {};
-
-        if (req.query.genere) {
-
-            query.genere = req.query.genere;
-
-        }
-
-        Dog.find(query, (err, dogs)=> {
-
-            if (err) {
-
-                res.status(500).send(err);
-
-            } else {
-
-                res.json(dogs);
-
-            }
-
-        });
-
-    });
-
-dogRouter.route("/dog/:id")
-    .get((req, res)=> {
-
-        Dog.findById(req.params.id, (err, dog)=> {
-
-            if (err || dog === null) {
-
-                res.statusCode = 404;
-                res.json({"message": "not found"});
-
-            } else {
-
-                res.json(dog);
-
-            }
-
-        });
-
-    });
 
 
 app.use("/api", dogRouter);
 
 app.use(require("webpack-dev-middleware")(compilar, {
     "noInfo": true,
-    "publicPath": webpackConfiguracion.output.publicPath/**/
+    "publicPath": webpackConfiguracion.output.publicPath
 }));
 
 app.use(require("webpack-hot-middleware")(compilar));
