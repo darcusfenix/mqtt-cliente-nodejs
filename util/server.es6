@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import open from "open";
 import webpack from "webpack";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -17,10 +16,10 @@ const app = express(),
 app.use(bodyParser.urlencoded({"extended": true}));
 app.use(bodyParser.json());
 
-let db = mongoose.connect("mongodb://localhost:27017/dogs");
+mongoose.connect("mongodb://localhost:27017/dogs");
 
 
-app.use("/api", dogRouter);
+app.use("/api/dog", dogRouter);
 
 app.use(require("webpack-dev-middleware")(compilar, {
     "noInfo": true,
@@ -67,7 +66,7 @@ app.listen(port, (err) => {
 
         let message = `SE INICIÓ EL SERVIDOR EN EL PUERTO:  ${port}`;
         console.log(message.green);
-        open("http://localhost:" + port);
+
 
     }
 
