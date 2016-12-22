@@ -29,7 +29,7 @@ export const schema = {
                         "type": "string",
                         "faker": "internet.url"
                     },
-                    "comentarios": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod magna aliqua.",
+                    "comentarios": "Lorem ipsum dolor sit amet",
                     "direccion": {
                         "calle": {
                             "type": "string",
@@ -43,7 +43,7 @@ export const schema = {
                             "type": "string",
                             "faker": "address.county"
                         },
-                        "comentarios": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                        "comentarios": "Lorem ipsum dolor sit amet",
                         "estado": {
                             "id": {
                                 "type": "number",
@@ -103,7 +103,16 @@ export const schema = {
                         "pattern": "^[A-F]{1}[A-F]{1}[A-F]{1}[A-F]{1}[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}$"
                     }
                 },
-                "required": ["id", "nombre", "razonSocial", "telefono", "sitioweb", "rfc", "comentarios", "direccion"]
+                "required": [
+                    "id",
+                    "nombre",
+                    "razonSocial",
+                    "telefono",
+                    "sitioweb",
+                    "rfc",
+                    "comentarios",
+                    "direccion"
+                ]
             }
         },
         "obra": {
@@ -126,7 +135,7 @@ export const schema = {
                 "required": ["id", "Descripcion"]
             }
         },
-        "dogs":{
+        "pets": {
             "type": "array",
             "minItems": 50,
             "maxItems": 50,
@@ -154,9 +163,9 @@ export const schema = {
                         "pattern": "false|true"
                     }
                 },
-                "required": [ "name","age", "genere", "lost"]
+                "required": ["name", "age", "genere", "lost"]
             }
         }
     },
-    "required": ["cliente", "obra", "dogs"]
+    "required": ["cliente", "obra", "pets"]
 };

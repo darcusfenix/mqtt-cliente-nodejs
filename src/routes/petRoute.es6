@@ -1,17 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
-import Dog from "../models/dogModel.es6";
+import Pet from "../models/petModel.es6";
 
 const routes = () => {
 
-    const dogRouter = express.Router();
+    const petRouter = express.Router();
 
-    dogRouter.route("/")
+    petRouter.route("/")
         .post((req, res) => {
 
-            let dog = new Dog(req.body);
-            dog.save();
-            res.status(201).send(dog);
+            let pet = new Pet(req.body);
+            pet.save();
+            res.status(201).send(pet);
 
         })
         .get((req, res) => {
@@ -24,7 +24,7 @@ const routes = () => {
 
             }
 
-            Dog.find(query, (err, dogs) => {
+            Pet.find(query, (err, pets) => {
 
                 if (err) {
 
@@ -32,7 +32,7 @@ const routes = () => {
 
                 } else {
 
-                    res.json(dogs);
+                    res.json(pets);
 
                 }
 
@@ -40,14 +40,14 @@ const routes = () => {
 
         });
 
-    dogRouter.use("/:id", (req, res, next) => {
+    petRouter.use("/:id", (req, res, next) => {
 
-        const query = Dog.findById({"_id": req.params.id});
+        const query = Pet.findById({"_id": req.params.id});
 
         mongoose.Promise = global.Promise;
-        query.exec().then(dog => {
+        query.exec().then(pet => {
 
-            req.dog = dog;
+            req.pet = pet;
             next();
 
         }).catch(error => {
@@ -60,24 +60,24 @@ const routes = () => {
 
     });
 
-    dogRouter.route("/:id")
+    petRouter.route("/:id")
         .get((req, res) => {
 
-            res.json(req.dog);
+            res.json(req.pet);
 
         })
         .put((req, res) => {
 
-            req.dog.name = req.body.name;
-            req.dog.age = req.body.age;
-            req.dog.genere = req.body.genere;
-            req.dog.lost = req.body.lost;
-            const promise = req.dog.save();
+            req.pet.name = req.body.name;
+            req.pet.age = req.body.age;
+            req.pet.genere = req.body.genere;
+            req.pet.lost = req.body.lost;
+            const promise = req.pet.save();
 
 
-            promise.then(dog => {
+            promise.then(pet => {
 
-                res.json(dog);
+                res.json(pet);
 
             });
 
@@ -99,16 +99,16 @@ const routes = () => {
 
             for (const property in req.body) {
 
-                req.dog[property] = req.body[property];
+                req.pet[property] = req.body[property];
 
             }
 
-            const promise = req.dog.save();
+            const promise = req.pet.save();
 
 
-            promise.then(dog => {
+            promise.then(pet => {
 
-                res.json(dog);
+                res.json(pet);
 
             });
 
@@ -121,7 +121,7 @@ const routes = () => {
 
         });
 
-    return dogRouter;
+    return petRouter;
 
 };
 

@@ -1,7 +1,3 @@
-import "./index.css";
-
-
-
 class Index {
 
 

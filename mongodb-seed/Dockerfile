@@ -8,4 +8,4 @@ COPY . /opt/app
 
 
 #RUN mongodump  -h 192.168.69.27 --port 27017 -d TManagerPoC  -o databaseBackup
-CMD mongoimport --host mongodb --db "dogs" --collection "dogs" --type json --file "dogs.json" --jsonArray
+CMD mongoimport --host mongodb --db "pets" --collection "pets" --type json --file "pets.json" --jsonArray
