@@ -1,6 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
+import log4js from "log4js";
 import Pet from "../models/petModel.es6";
+
+const log = log4js.getLogger("PET-REST");
 
 const routes = () => {
 
@@ -48,10 +51,12 @@ const routes = () => {
         query.exec().then(pet => {
 
             req.pet = pet;
+            log.debug(pet);
             next();
 
         }).catch(error => {
 
+            log.error(error);
             res.statusCode = 404;
             res.json({"message": error});
 
@@ -108,7 +113,9 @@ const routes = () => {
 
             promise.then(pet => {
 
+
                 res.json(pet);
+
 
             });
 

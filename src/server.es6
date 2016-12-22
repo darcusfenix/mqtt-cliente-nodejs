@@ -1,19 +1,23 @@
 import express from "express";
 import webpack from "webpack";
 import mongoose from "mongoose";
-import colors from "colors";
+import log4js from "log4js";
 import bodyParser from "body-parser";
 import webpackConfiguracion from "../webpack.config.dev";
 import petRouter from "./routes/petRoute.es6";
 
 const app = express(),
     compilar = webpack(webpackConfiguracion),
-    port = 3000;
+    port = 3000,
+    log = log4js.getLogger("app");
+
+app.use(log4js.connectLogger(log4js.getLogger("http"), {"level": "auto"}));
 
 app.use(bodyParser.urlencoded({"extended": true}));
 app.use(bodyParser.json());
 
 mongoose.connect("mongodb://localhost:27017/pets");
+
 
 
 app.use("/api/pet", petRouter);
@@ -46,7 +50,7 @@ app.use((err, req, res, next) => {
     res.json({"message": "url not found"});
 
 });
-
+/*
 app.listen(port, (err) => {
 
     if (err) {
@@ -56,9 +60,12 @@ app.listen(port, (err) => {
     } else {
 
         let message = `Server started on port:  ${port}`;
-        console.log(message.green);
+        log.info(message);
 
     }
 
 });
 
+*/
+
+module.exports = app;

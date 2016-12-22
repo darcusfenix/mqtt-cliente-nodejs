@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": " echo 'test' ",
-    "server-dev": "babel-node src/server.es6",
+    "server-dev": "babel-node src/bin/www",
     "ejemplo-json-server": "http://localhost:3001/cliente/?nombre_like=and&_limit=5",
     "prestart": "echo 'pre-start'",
     "start": "npm-run-all --parallel server-dev lint:watch start-mockapi",
@@ -74,11 +74,15 @@
     "axios": "^0.14.0",
     "body-parser": "^1.15.2",
     "colors": "^1.1.2",
+    "express-cluster": "0.0.4",
     "jquery": "^3.1.1",
+    "json-loader": "^0.5.4",
     "localtunnel": "^1.8.1",
+    "log4js": "^1.1.0",
     "mongoose": "^4.7.3",
     "nsp": "^2.6.2",
     "path": "^0.12.7",
+    "webpack-node-externals": "^1.5.4",
     "whatwg-fetch": "^2.0.1"
   }
 }

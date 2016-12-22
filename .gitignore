@@ -3,7 +3,7 @@ bower_components/
 public/bower_components/
 .idea/
 ._*
-*.log
+*.log*
 public/plantillas/
 .vscode/
 public/plantilla/
