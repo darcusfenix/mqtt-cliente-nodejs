@@ -2,134 +2,135 @@ import express from "express";
 import mongoose from "mongoose";
 import log4js from "log4js";
 import Pet from "../models/petModel.es6";
+import petController from "../controllers/petController.es6";
 
-const log = log4js.getLogger("PET-REST");
+const log = log4js.getLogger("ROUTE-PET"),
+    routes = () => {
 
-const routes = () => {
+        const petRouter = express.Router();
 
-    const petRouter = express.Router();
+        let controlador = petController(Pet);
 
-    petRouter.route("/")
-        .post((req, res) => {
+        petRouter.route("/")
+            .post(controlador.post)
+            .get(controlador.get);
 
-            let pet = new Pet(req.body);
-            pet.save();
-            res.status(201).send(pet);
+        petRouter.use("/:id", (req, res, next) => {
 
-        })
-        .get((req, res) => {
+            const query = Pet.findById({"_id": req.params.id});
 
-            let query = {};
+            mongoose.Promise = global.Promise;
+            query.exec().then(pet => {
 
-            if (req.query.genere) {
+                req.pet = pet;
+                log.debug("PET FOUND");
+                log.debug(pet);
+                next();
 
-                query.genere = req.query.genere;
+            }).catch(error => {
 
-            }
+                log.error(error);
+                res.statusCode = 404;
+                res.json({"message": error});
 
-            Pet.find(query, (err, pets) => {
 
-                if (err) {
+            });
 
-                    res.status(500).send(err);
+        });
+
+        petRouter.route("/:id")
+            .get((req, res) => {
+
+                if (req.pet === null) {
+
+                    res.statusCode = 404;
+                    res.json({"message": "not found"});
 
                 } else {
 
-                    res.json(pets);
+                    res.json(req.pet);
 
                 }
 
-            });
+            })
+            .put((req, res) => {
 
-        });
-
-    petRouter.use("/:id", (req, res, next) => {
-
-        const query = Pet.findById({"_id": req.params.id});
-
-        mongoose.Promise = global.Promise;
-        query.exec().then(pet => {
-
-            req.pet = pet;
-            log.debug(pet);
-            next();
-
-        }).catch(error => {
-
-            log.error(error);
-            res.statusCode = 404;
-            res.json({"message": error});
+                req.pet.name = req.body.name;
+                req.pet.age = req.body.age;
+                req.pet.genere = req.body.genere;
+                req.pet.lost = req.body.lost;
+                const promise = req.pet.save();
 
 
-        });
+                promise.then(pet => {
 
-    });
+                    res.json(pet);
 
-    petRouter.route("/:id")
-        .get((req, res) => {
+                });
 
-            res.json(req.pet);
+                promise.catch(error => {
 
-        })
-        .put((req, res) => {
+                    res.statusCode = 505;
+                    res.json({"message": error});
 
-            req.pet.name = req.body.name;
-            req.pet.age = req.body.age;
-            req.pet.genere = req.body.genere;
-            req.pet.lost = req.body.lost;
-            const promise = req.pet.save();
+                });
 
+            })
+            .patch((req, res) => {
 
-            promise.then(pet => {
+                if (req.body._id) {
 
-                res.json(pet);
+                    delete req.body._id;
 
-            });
+                }
 
-            promise.catch(error => {
+                for (const property in req.body) {
 
-                res.statusCode = 505;
-                res.json({"message": error});
+                    req.pet[property] = req.body[property];
 
-            });
+                }
 
-        })
-        .patch((req, res) => {
-
-            if (req.body._id) {
-
-                delete req.body._id;
-
-            }
-
-            for (const property in req.body) {
-
-                req.pet[property] = req.body[property];
-
-            }
-
-            const promise = req.pet.save();
+                const promise = req.pet.save();
 
 
-            promise.then(pet => {
+                promise.then(pet => {
+
+                    res.json(pet);
+
+                });
+
+                promise.catch(error => {
+
+                    res.statusCode = 505;
+                    res.json({"message": error});
+
+                });
+
+            })
+            .delete((req, res) => {
+
+                const promise = req.pet.remove();
 
 
-                res.json(pet);
+                promise.then(() => {
 
+                    res.statusCode = 204;
+                    res.json({"message": "removed"});
+
+                });
+
+                promise.catch(error => {
+
+                    log.error(error);
+                    res.statusCode = 505;
+                    res.json({"message": error});
+
+                });
 
             });
 
-            promise.catch(error => {
+        return petRouter;
 
-                res.statusCode = 505;
-                res.json({"message": error});
-
-            });
-
-        });
-
-    return petRouter;
-
-};
+    };
 
 export default routes();
