@@ -30,10 +30,10 @@ const petController = (Pet) => {
             let pet = new Pet(req.body);
 
 
-            if (!req.body.title) {
+            if (!req.body.name) {
 
                 res.status(400);
-                res.send("Title is required");
+                res.send("Name is required");
 
             } else {
 

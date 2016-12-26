@@ -7,7 +7,7 @@ describe("Pet Controller Tests:", () => {
 
     describe("Post", () => {
 
-        it("should not allow an empty title on post", () => {
+        it("should not allow an empty name on post", () => {
 
             const Pet = function (Pet) {
 
@@ -17,7 +17,7 @@ describe("Pet Controller Tests:", () => {
                 },
                 req = {
                     "body": {
-                        "author": "Jon"
+                        "hola": "Jon"
                     },
                     "query": {
                         "genere": "m"
@@ -35,7 +35,7 @@ describe("Pet Controller Tests:", () => {
             res.status.calledWith(400).should.equal(
                 true, "Bad Status " + res.status.args[0][0]);
 
-            res.send.calledWith("Title is required").should.equal(true);
+            res.send.calledWith("Name is required").should.equal(true);
 
         });
 
@@ -43,7 +43,7 @@ describe("Pet Controller Tests:", () => {
 
     describe("Post two twice", () => {
 
-        it("should not allow an empty title on post", () => {
+        it("should not allow an empty name on post", () => {
 
             const Pet = function (Pet) {
 
@@ -53,7 +53,7 @@ describe("Pet Controller Tests:", () => {
                 },
                 req = {
                     "body": {
-                        "author": "Jon"
+                        "hola": "Jon"
                     },
                     "query": {
                         "genere": "m"
@@ -71,7 +71,7 @@ describe("Pet Controller Tests:", () => {
             res.status.calledWith(400).should.equal(
                 true, "Bad Status " + res.status.args[0][0]);
 
-            res.send.calledWith("Title is required").should.equal(true);
+            res.send.calledWith("Name is required").should.equal(true);
 
         });
 

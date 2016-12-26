@@ -16,8 +16,16 @@ app.use(log4js.connectLogger(log4js.getLogger("http"), {"level": "auto"}));
 app.use(bodyParser.urlencoded({"extended": true}));
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb://localhost:27017/pets");
 
+if (process.env.NODE_ENV === "test") {
+
+    mongoose.connect("mongodb://localhost:27017/pets");
+
+} else {
+
+    mongoose.connect("mongodb://localhost:27017/test");
+
+}
 
 
 app.use("/api/pet", petRouter);
@@ -51,21 +59,21 @@ app.use((err, req, res, next) => {
 
 });
 /*
-app.listen(port, (err) => {
+ app.listen(port, (err) => {
 
-    if (err) {
+ if (err) {
 
-        console.log(err.red);
+ console.log(err.red);
 
-    } else {
+ } else {
 
-        let message = `Server started on port:  ${port}`;
-        log.info(message);
+ let message = `Server started on port:  ${port}`;
+ log.info(message);
 
-    }
+ }
 
-});
+ });
 
-*/
+ */
 
 module.exports = app;
