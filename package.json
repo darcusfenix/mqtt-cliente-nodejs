@@ -1,14 +1,15 @@
 {
-  "name": "dogs",
+  "name": "pets",
   "version": "1.0.0",
   "description": "prueba de concepto",
   "main": "index.js",
   "scripts": {
-    "test": " echo 'test' ",
+    "test": "mocha -c  --reporter spec --compilers js:babel-core/register \"src/**/*.test.es6\"",
+    "test:watch": "watch-run -i -p \"src/**/*.test.es6\" npm test ",
     "server-dev": "babel-node src/bin/www",
     "ejemplo-json-server": "http://localhost:3001/cliente/?nombre_like=and&_limit=5",
     "prestart": "echo 'pre-start'",
-    "start": "npm-run-all --parallel server-dev lint:watch start-mockapi",
+    "start": "npm-run-all --parallel server-dev lint:watch test:watch start-mockapi",
     "generate-mock-data": "babel-node src/generateMockData",
     "prestart-mockapi": "npm run generate-mock-data",
     "start-mockapi": "json-server --watch src/mock-api/db.json --port 3001",
@@ -79,9 +80,13 @@
     "json-loader": "^0.5.4",
     "localtunnel": "^1.8.1",
     "log4js": "^1.1.0",
+    "mocha": "^3.2.0",
     "mongoose": "^4.7.3",
     "nsp": "^2.6.2",
     "path": "^0.12.7",
+    "should": "^11.1.2",
+    "sinon": "^1.17.6",
+    "watch-run": "^1.2.4",
     "webpack-node-externals": "^1.5.4",
     "whatwg-fetch": "^2.0.1"
   }

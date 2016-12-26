@@ -1,4 +1,3 @@
-
 const petController = (Pet) => {
 
     const get = (req, res) => {
@@ -29,8 +28,21 @@ const petController = (Pet) => {
         post = (req, res) => {
 
             let pet = new Pet(req.body);
-            pet.save();
-            res.status(201).send(pet);
+
+
+            if (!req.body.title) {
+
+                res.status(400);
+                res.send("Title is required");
+
+            } else {
+
+                pet.save();
+                res.status(201);
+                res.send(pet);
+
+            }
+
 
         };
 
