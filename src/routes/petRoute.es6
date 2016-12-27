@@ -1,4 +1,4 @@
-import express from "express";
+import {Router} from "express";
 import mongoose from "mongoose";
 import log4js from "log4js";
 import Pet from "../models/petModel.es6";
@@ -7,7 +7,7 @@ import petController from "../controllers/petController.es6";
 const log = log4js.getLogger("ROUTE-PET"),
     routes = () => {
 
-        const petRouter = express.Router();
+        const petRouter = Router();
 
         let controlador = petController(Pet);
 

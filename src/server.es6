@@ -1,10 +1,13 @@
-import express from "express";
+import express, {Router} from "express";
 import webpack from "webpack";
+import {initialize} from "./initializationTasks";
 import mongoose from "mongoose";
+import cors from "cors";
 import log4js from "log4js";
 import bodyParser from "body-parser";
 import webpackConfiguracion from "../webpack.config.dev";
 import petRouter from "./routes/petRoute.es6";
+import apiRouteConfig from "./configurations/apiRoutesConfig.es6";
 
 const app = express(),
     compilar = webpack(webpackConfiguracion),
@@ -17,18 +20,13 @@ app.use(bodyParser.urlencoded({"extended": true}));
 app.use(bodyParser.json());
 
 
-if (process.env.NODE_ENV === "test") {
+app.use((req, res, next) => {
 
-    mongoose.connect("mongodb://localhost:27017/pets");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+    next();
 
-} else {
-
-    mongoose.connect("mongodb://localhost:27017/test");
-
-}
-
-
-app.use("/api/pet", petRouter);
+});
 
 app.use(require("webpack-dev-middleware")(compilar, {
     "noInfo": true,
@@ -36,6 +34,23 @@ app.use(require("webpack-dev-middleware")(compilar, {
 }));
 
 app.use(require("webpack-hot-middleware")(compilar));
+
+/*
+ if (process.env.NODE_ENV === "test") {
+
+ mongoose.connect("mongodb://localhost:27017/pets");
+
+ } else {
+
+ mongoose.connect("mongodb://localhost:27017/test");
+
+ }
+ */
+
+apiRouteConfig(app);
+
+app.use("/api/pet", petRouter);
+
 
 app.get("*", (req, res, next) => {
 
@@ -75,5 +90,31 @@ app.use((err, req, res, next) => {
  });
 
  */
+
+initialize()
+    .then(function () {
+
+        app.listen(port, function (err) {
+
+            if (err) {
+
+                log.error(err);
+
+            } else {
+
+                log.debug(`Express server listening at http://localhost:${port}`);
+
+
+            }
+
+        });
+
+    })
+    .catch(function (err) {
+
+        log.error(err);
+
+    });
+
 
 module.exports = app;
