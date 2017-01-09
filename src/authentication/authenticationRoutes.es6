@@ -6,8 +6,9 @@ import {getUserModel} from "../data_access/modelFactory.es6";
 
 const authenticationRouter = Router();
 const log = log4js.getLogger("ROUTE-AUTHENTICATION");
+const prefijo = "/api/user/";
 
-authenticationRouter.route("/abc/user")
+authenticationRouter.route(prefijo)
     .post(cors(), async(req, res) => {
         try {
             log.debug(`Atendiendo petición POST`);
@@ -64,5 +65,55 @@ authenticationRouter.route("/abc/user")
 
         }
     });
+
+
+authenticationRouter.route(`${prefijo}login`)
+    .post(cors(), async function (req, res) {
+        try {
+            const User = await getUserModel();
+            const {email, password} = req.body;
+
+            const existingUser = await User.findOne({username: email}).exec();
+
+            if (!existingUser) {
+
+                return res.status(401).send("Invalid username or password");
+
+            }
+
+            existingUser.passwordIsValid(password, function (err, results) {
+
+                if (err) {
+
+                    return res.status(401).send("There is a problem loggin in at the moment");
+
+                } else if (!results) {
+
+                    return res.status(401).send("Invalid username or password");
+
+                }
+
+                const userInfo = {
+                    _id: existingUser._id,
+                    firstName: existingUser.firstName,
+                    lastName: existingUser.lastName,
+                    username: existingUser.email
+                };
+
+                res.status(200).json({
+                    firstName: existingUser.firstName,
+                    lastName: existingUser.lastName,
+                    username: existingUser.email
+                });
+
+            });
+
+        }
+        catch (err) {
+
+            res.status(500).send("There was an error attempting to login. Please try again later.");
+        }
+    });
+
 
 export default authenticationRouter;

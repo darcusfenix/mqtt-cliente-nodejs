@@ -49,7 +49,7 @@ app.use(require("webpack-hot-middleware")(compilar));
 
 apiRouteConfig(app);
 
-app.use("/api/pet", petRouter);
+//app.use("/api/pet", petRouter);
 
 
 app.get("*", (req, res, next) => {
