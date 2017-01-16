@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema,
     UserSchema = new Schema({
-
         "firstName": String,
         "lastName": String,
         "username": {
@@ -15,10 +14,13 @@ const Schema = mongoose.Schema,
         "password": {
             "type": String,
             "required": true,
+            "match": /(?=.*[a-zA-Z])(?=.*[0-9]+).*/,
+            "minlength": 12
         },
         "email": {
             "type": String,
             "require": true,
+            "match": /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
         },
         "created": {
             "type": Date,
@@ -66,9 +68,9 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema.methods.passwordIsValid = function (password, callback) {
 
-    bcrypt.compare(password, this.password, function (err, results){
+    bcrypt.compare(password, this.password, function (err, results) {
 
-        if (err){
+        if (err) {
 
             callback(false);
 

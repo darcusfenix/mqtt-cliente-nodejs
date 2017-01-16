@@ -1,7 +1,8 @@
 import {Router} from "express";
 import cors from "cors";
 import log4js from "log4js";
-import {getUserModel} from "../data_access/modelFactory.es6";
+import {getUserModel, getLoginsModel} from "../data_access/modelFactory.es6";
+import {postSchema} from "../user/validationUserSchema.es6"
 
 
 const authenticationRouter = Router();
@@ -11,17 +12,47 @@ const prefijo = "/api/user/";
 authenticationRouter.route(prefijo)
     .post(cors(), async(req, res) => {
         try {
-            log.debug(`Atendiendo petición POST`);
-            const User = await getUserModel();
+            const delayResponse = response => {
+                setTimeout(() => {
+                    response();
+                }, 1000);
+            };
 
             const {email, password, firstName, lastName} = req.body;
+
+            log.debug(`Atendiendo petición POST`);
+
+            req.checkBody(postSchema);
+            const errors = req.validationErrors();
+
+            if (errors) {
+
+                log.debug(`Los errores son`, errors);
+                return delayResponse(() =>
+                    res.status(500).json(errors)
+                );
+
+            } else {
+
+                log.debug(`No hubo errores de validación`);
+
+            }
+
+            const identityKey = `${email}-${clientIp}`;
+            const Logins = await getLoginsModel();
+
+            const User = await getUserModel();
+
+
 
             log.debug(`Obteniendo valores: ${email} ${lastName}`);
             const existingUser = await User.findOne({username: email}).exec();
 
             if (existingUser) {
 
-                return res.status(409).send(`The specified email ${email} address already exists.`);
+                return delayResponse(() =>
+                    res.status(409).send(`The specified email ${email} address already exists.`)
+                );
 
             }
 
@@ -57,8 +88,9 @@ authenticationRouter.route(prefijo)
 
                 });
 
-            res.status(201).json({user: {firstName: user.firstName, lastName: user.lastName, email: user.email}});
-
+            return delayResponse(() =>
+                res.status(201).json({user: {firstName: user.firstName, lastName: user.lastName, email: user.email}})
+            );
         } catch (err) {
 
             throw err;

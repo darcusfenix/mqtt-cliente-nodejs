@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import webpackConfiguracion from "../webpack.config.dev";
 import petRouter from "./routes/petRoute.es6";
 import apiRouteConfig from "./configurations/apiRoutesConfig.es6";
+import expressValidator from "express-validator";
 
 const app = express(),
     compilar = webpack(webpackConfiguracion),
@@ -17,6 +18,7 @@ const app = express(),
 app.use(log4js.connectLogger(log4js.getLogger("http"), {"level": "auto"}));
 
 app.use(bodyParser.urlencoded({"extended": true}));
+app.use(expressValidator());
 app.use(bodyParser.json());
 
 

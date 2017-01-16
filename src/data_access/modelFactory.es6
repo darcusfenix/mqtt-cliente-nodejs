@@ -2,7 +2,7 @@ import UserSchema        from "../user/userModel.es6";
 import connectionProvider from "./connectionProvider.es6";
 import {serverSettings} from "./settings.es6";
 
-export const getUserModel = async() => {
+export const getUserModel = async function() {
     try {
 
         const conn = await connectionProvider(serverSettings.serverUrl, serverSettings.database);
@@ -12,6 +12,21 @@ export const getUserModel = async() => {
 
 
         log.error(err);
+        throw err;
+
+    }
+
+};
+
+export const getLoginsModel = async function() {
+
+     try {
+
+         const conn = await connectionProvider(serverSettings.serverUrl, serverSettings.database);
+         return conn.model("Logins", LoginsSchema);
+
+    } catch(err) {
+
         throw err;
 
     }
