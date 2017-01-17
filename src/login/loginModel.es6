@@ -2,33 +2,33 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema,
     LoginsSchema = new Schema({
-    "identityKey": {
-        "type": String,
-        "required": true,
-        "index": {
-            "unique": true
+        "identityKey": {
+            "type": String,
+            "required": true,
+            "index": {
+                "unique": true
+            }
+        },
+        "failedAttempts": {
+            "type": Number,
+            "required": true,
+            "default": 0
+        },
+        "timeout": {
+            "type": Date,
+            "required": true,
+            "default": new Date()
+        },
+        "inProgress": {
+            "type": Boolean,
+            "default": false
         }
-    },
-    "failedAttempts": {
-        "type": Number,
-        "required": true,
-        "default": 0
-    },
-    "timeout": {
-        "type": Date,
-        "required": true,
-        "default": new Date()
-    },
-    "inProgress": {
-        "type": Boolean,
-        "default": false
-    }
-});
+    });
 
 LoginsSchema.static("canAuthenticate", async function (key) {
     const login = await this.findOne({identityKey: key});
 
-    if (!login || login.failedAttempts < 5 ) {
+    if (!login || login.failedAttempts < 5) {
         return true;
     }
 
