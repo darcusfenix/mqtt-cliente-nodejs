@@ -1,9 +1,9 @@
-import authenticationRouter from "../authentication/authenticationRoutes.es6";
+import mqttRouter from "../routes/mqtt.es6";
 import cors from "cors";
 
 export default function apiRoutesConfig(app) {
 
     app.use(cors());
-    app.use(authenticationRouter);
+    app.use(mqttRouter);
 
 }

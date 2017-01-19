@@ -1,12 +1,12 @@
-mongodb:
-  image: mongo
-  ports:
-    - "27017:27017"
+#mongodb:
+ # image: mongo
+ # ports:
+ #   - "27017:27017"
 
-mongodb-seed:
-  build: ./mongodb-seed
-  links:
-  - mongodb
+#mongodb-seed:
+  #build: ./mongodb-seed
+  #links:
+ # - mongodb
 
 #web:
  # build: .
