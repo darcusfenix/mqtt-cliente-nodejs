@@ -3,7 +3,7 @@ import log4js from "log4js";
 import mqtt from "mqtt";
 
 const log = log4js.getLogger("MQTT-ROUTER");
-const uri = "tcp://activemq3870.cloudapp.net";
+const uri = "tcp://activemq3870.cloudapp.net/mqtt";
 const topico = "cemex/prospectos";
 
 let cliente;
