@@ -9,7 +9,7 @@ import apiRouteConfig from "./configurations/apiRoutesConfig.es6";
 
 const app = express(),
     compilar = webpack(webpackConfiguracion),
-    port = 3000,
+    port = 3009,
     log = log4js.getLogger("app");
 
 app.use(log4js.connectLogger(log4js.getLogger("http"), {"level": "auto"}));
