@@ -9,4 +9,4 @@ WORKDIR /opt/app
 
 
 RUN echo '{ "allow_root": true}' > /root/.bowerrc
-CMD ["npm", "run", "build"]
+CMD ["npm", "run", "start"]
